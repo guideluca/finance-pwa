@@ -5,7 +5,7 @@ function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       className={cn(
-        'rounded-2xl border border-border bg-surface-elevated/80 text-foreground shadow-sm backdrop-blur-sm',
+        'rounded-2xl border border-border/90 bg-surface-elevated/85 text-foreground backdrop-blur-md [box-shadow:var(--shadow-card)]',
         className,
       )}
       {...props}

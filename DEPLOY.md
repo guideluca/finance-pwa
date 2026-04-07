@@ -14,6 +14,8 @@ https://github.com/new — nome: `finance-pwa`, sem README (o teu projeto já te
 
 Se `git remote add` disser que `origin` já existe: `git remote set-url origin https://github.com/guideluca/finance-pwa.git`
 
+**Base de dados:** no Supabase → SQL Editor, execute também ficheiros novos em `supabase/migrations/` que ainda não tenha corrido (ex. `*_transaction_dedup.sql` para deduplicação).
+
 ## 2. Vercel
 
 1. Aceda a [vercel.com](https://vercel.com) e inicie sessão (ex. com GitHub).

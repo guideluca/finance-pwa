@@ -49,6 +49,7 @@ export interface Database {
           category_id: string | null
           import_batch_id: string | null
           import_file_id: string | null
+          dedup_key: string | null
           created_at: string
         }
         Insert: {
@@ -63,6 +64,7 @@ export interface Database {
           category_id?: string | null
           import_batch_id?: string | null
           import_file_id?: string | null
+          dedup_key?: string | null
           created_at?: string
         }
         Update: {
@@ -77,6 +79,7 @@ export interface Database {
           category_id?: string | null
           import_batch_id?: string | null
           import_file_id?: string | null
+          dedup_key?: string | null
           created_at?: string
         }
         Relationships: []
@@ -168,6 +171,63 @@ export interface Database {
         }
         Relationships: []
       }
+      savings_entries: {
+        Row: {
+          id: string
+          user_id: string
+          goal_id: string
+          date: string
+          amount_cents: number
+          note: string | null
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          goal_id: string
+          date: string
+          amount_cents: number
+          note?: string | null
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          goal_id?: string
+          date?: string
+          amount_cents?: number
+          note?: string | null
+          created_at?: string
+        }
+        Relationships: []
+      }
+      savings_goals: {
+        Row: {
+          id: string
+          user_id: string
+          name: string
+          target_cents: number | null
+          sort_order: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          user_id: string
+          name: string
+          target_cents?: number | null
+          sort_order?: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string
+          name?: string
+          target_cents?: number | null
+          sort_order?: number
+          created_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: Record<string, never>
     Functions: Record<string, never>
@@ -177,5 +237,9 @@ export interface Database {
 }
 
 export type Category = Database['public']['Tables']['categories']['Row']
+export type ImportBatch = Database['public']['Tables']['import_batches']['Row']
+export type ImportFile = Database['public']['Tables']['import_files']['Row']
 export type Transaction = Database['public']['Tables']['transactions']['Row']
 export type Rule = Database['public']['Tables']['rules']['Row']
+export type SavingsGoal = Database['public']['Tables']['savings_goals']['Row']
+export type SavingsEntry = Database['public']['Tables']['savings_entries']['Row']

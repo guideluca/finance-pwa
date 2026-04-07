@@ -1,11 +1,16 @@
-import { Home, List, LogOut, Settings, Upload, FolderTree } from 'lucide-react'
+import { FolderTree, Home, List, LogOut, PiggyBank, Settings, Sparkles, Upload } from 'lucide-react'
+import { FloatingAiChat } from '@/components/ai/FloatingAiChat'
+import { useEffect } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
+import { seedDefaultCategoriesIfEmpty, seedDefaultRulesIfEmpty } from '@/lib/seedCategories'
 import { cn } from '@/lib/utils'
 
 const nav = [
   { to: '/', icon: Home, label: 'Início' },
+  { to: '/analysis', icon: Sparkles, label: 'Análise' },
+  { to: '/savings', icon: PiggyBank, label: 'Poupança' },
   { to: '/transactions', icon: List, label: 'Extrato' },
   { to: '/import', icon: Upload, label: 'Importar' },
   { to: '/categories', icon: FolderTree, label: 'Categorias' },
@@ -13,7 +18,20 @@ const nav = [
 ]
 
 export function AppShell() {
-  const { signOut } = useAuth()
+  const { user, signOut } = useAuth()
+
+  useEffect(() => {
+    if (!user) return
+    void (async () => {
+      try {
+        await seedDefaultCategoriesIfEmpty(user.id)
+        await seedDefaultRulesIfEmpty(user.id)
+      } catch (e) {
+        console.error(e)
+      }
+    })()
+  }, [user])
+
   return (
     <div className="flex min-h-dvh flex-col bg-background pb-[calc(4.5rem+env(safe-area-inset-bottom))]">
       <header className="sticky top-0 z-40 flex items-center justify-end gap-2 border-b border-border bg-background/90 px-4 py-2 backdrop-blur-md pt-[max(0.5rem,env(safe-area-inset-top))]">
@@ -35,15 +53,15 @@ export function AppShell() {
         className="fixed bottom-0 left-0 right-0 z-50 border-t border-border bg-surface/95 backdrop-blur-md pb-[env(safe-area-inset-bottom)]"
         aria-label="Principal"
       >
-        <ul className="mx-auto flex max-w-lg justify-between px-2 py-2">
+        <ul className="mx-auto flex max-w-lg min-w-0 justify-between gap-0.5 overflow-x-auto px-1 py-2 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {nav.map(({ to, icon: Icon, label }) => (
-            <li key={to} className="flex-1">
+            <li key={to} className="min-w-0 flex-1">
               <NavLink
                 to={to}
                 end={to === '/'}
                 className={({ isActive }) =>
                   cn(
-                    'flex flex-col items-center gap-0.5 rounded-lg py-1.5 text-[10px] font-medium text-muted transition-colors',
+                    'flex min-w-0 flex-col items-center gap-0.5 rounded-lg py-1.5 text-[9px] font-semibold leading-tight text-muted transition-colors sm:text-[10px]',
                     isActive && 'text-accent',
                   )
                 }
@@ -55,6 +73,7 @@ export function AppShell() {
           ))}
         </ul>
       </nav>
+      <FloatingAiChat />
     </div>
   )
 }

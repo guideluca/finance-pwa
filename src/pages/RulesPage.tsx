@@ -67,7 +67,11 @@ export function RulesPage() {
     <div className="space-y-6 pb-24">
       <header>
         <h1 className="text-2xl font-semibold tracking-tight">Regras</h1>
-        <p className="text-sm text-muted">Palavras na descrição definem a categoria sugerida</p>
+        <p className="text-sm text-muted">
+          Palavras ou expressões na descrição do lançamento definem a categoria sugerida (import e
+          extrato). Contas novas recebem regras iniciais (Uber, Mercado, restaurante, etc.); pode
+          editar, apagar ou acrescentar aqui.
+        </p>
       </header>
 
       <Card>
