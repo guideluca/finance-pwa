@@ -1,12 +1,0 @@
-vite v8.0.5 building client environment for production...
-[2Ktransforming...✓ 3182 modules transformed.
-rendering chunks...
-computing gzip size...
-dist/registerSW.js                           0.13 kB
-dist/manifest.webmanifest                    0.30 kB
-dist/index.html                              1.06 kB │ gzip:   0.54 kB
-dist/assets/pdf.worker.min-FHbmGBN0.mjs  1,244.25 kB
-dist/assets/index-7bmgcZKb.css              22.96 kB │ gzip:   4.96 kB
-dist/assets/index-c3tWve4I.js            1,300.89 kB │ gzip: 384.02 kB
-
-✗ Build failed in 262ms
