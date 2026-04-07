@@ -4,12 +4,15 @@
 
 ```bash
 cd finance-pwa
-git remote add origin https://github.com/SEU-USUARIO/finance-pwa.git
+git remote add origin https://github.com/guideluca/finance-pwa.git
 git branch -M main
 git push -u origin main
 ```
 
-(Crie o repositório vazio no GitHub antes, se ainda não existir.)
+Crie antes, no GitHub (utilizador **guideluca**), um repositório vazio chamado **finance-pwa**:
+https://github.com/new — nome: `finance-pwa`, sem README (o teu projeto já tem ficheiros).
+
+Se `git remote add` disser que `origin` já existe: `git remote set-url origin https://github.com/guideluca/finance-pwa.git`
 
 ## 2. Vercel
 
