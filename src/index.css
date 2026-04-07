@@ -48,6 +48,35 @@ html {
   }
 }
 
+/* Override manual theme selection (set by ThemeProvider via html[data-theme]). */
+html[data-theme='dark'] {
+  --color-background: #0a0e14;
+  --color-surface: #111827;
+  --color-surface-elevated: #161f2e;
+  --color-border: #273549;
+  --color-muted: #8b9cb5;
+  --color-foreground: #e8edf5;
+  --color-accent: #10b981;
+  --color-accent-muted: rgba(16, 185, 129, 0.15);
+  --color-danger: #f87171;
+  --color-warning: #fbbf24;
+  --shadow-card: 0 18px 48px -18px rgb(0 0 0 / 0.55), 0 0 0 1px rgb(255 255 255 / 0.04);
+}
+
+html[data-theme='light'] {
+  --color-background: #eceff3;
+  --color-surface: #ffffff;
+  --color-surface-elevated: #ffffff;
+  --color-border: #dde3eb;
+  --color-muted: #5c6b80;
+  --color-foreground: #0f172a;
+  --color-accent: #059669;
+  --color-accent-muted: rgba(5, 150, 105, 0.12);
+  --color-danger: #dc2626;
+  --color-warning: #d97706;
+  --shadow-card: 0 14px 36px -16px rgb(15 23 42 / 0.1), 0 0 0 1px rgb(15 23 42 / 0.05);
+}
+
 body {
   margin: 0;
   min-height: 100dvh;
@@ -68,6 +97,10 @@ body {
   body {
     background-image: linear-gradient(180deg, #e8ecf2 0%, #f4f6f9 38%, #eceff3 100%);
   }
+}
+
+html[data-theme='light'] body {
+  background-image: linear-gradient(180deg, #e8ecf2 0%, #f4f6f9 38%, #eceff3 100%);
 }
 
 #root {

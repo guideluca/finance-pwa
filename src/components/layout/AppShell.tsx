@@ -1,9 +1,10 @@
-import { FolderTree, Home, List, LogOut, PiggyBank, Settings, Sparkles, Upload } from 'lucide-react'
+import { FolderTree, Home, List, LogOut, Moon, PiggyBank, Settings, Sparkles, Sun, Upload } from 'lucide-react'
 import { FloatingAiChat } from '@/components/ai/FloatingAiChat'
 import { useEffect } from 'react'
 import { NavLink, Outlet } from 'react-router-dom'
 import { Button } from '@/components/ui/button'
 import { useAuth } from '@/contexts/AuthContext'
+import { useTheme } from '@/contexts/ThemeContext'
 import { seedDefaultCategoriesIfEmpty, seedDefaultRulesIfEmpty } from '@/lib/seedCategories'
 import { cn } from '@/lib/utils'
 
@@ -19,6 +20,7 @@ const nav = [
 
 export function AppShell() {
   const { user, signOut } = useAuth()
+  const { resolved, toggle } = useTheme()
 
   useEffect(() => {
     if (!user) return
@@ -35,6 +37,17 @@ export function AppShell() {
   return (
     <div className="flex min-h-dvh flex-col bg-background pb-[calc(4.5rem+env(safe-area-inset-bottom))]">
       <header className="sticky top-0 z-40 flex items-center justify-end gap-2 border-b border-border bg-background/90 px-4 py-2 backdrop-blur-md pt-[max(0.5rem,env(safe-area-inset-top))]">
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="text-muted"
+          onClick={toggle}
+          aria-label={resolved === 'dark' ? 'Ativar modo claro' : 'Ativar modo escuro'}
+          title={resolved === 'dark' ? 'Modo claro' : 'Modo escuro'}
+        >
+          {resolved === 'dark' ? <Sun className="size-4" /> : <Moon className="size-4" />}
+        </Button>
         <Button
           type="button"
           variant="ghost"

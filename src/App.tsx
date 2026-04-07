@@ -2,6 +2,7 @@ import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom
 import { AppShell } from '@/components/layout/AppShell'
 import { AuthProvider, useAuth } from '@/contexts/AuthContext'
 import { FinanceAiProvider } from '@/contexts/FinanceAiContext'
+import { ThemeProvider } from '@/contexts/ThemeContext'
 import { isSupabaseConfigured } from '@/lib/supabase'
 import { CategoriesPage } from '@/pages/CategoriesPage'
 import { DashboardPage } from '@/pages/DashboardPage'
@@ -66,9 +67,11 @@ function AppRoutes() {
 export default function App() {
   return (
     <BrowserRouter>
-      <AuthProvider>
-        <AppRoutes />
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <AppRoutes />
+        </AuthProvider>
+      </ThemeProvider>
     </BrowserRouter>
   )
 }
