@@ -1,0 +1,63 @@
+import { BrowserRouter, Navigate, Outlet, Route, Routes } from 'react-router-dom'
+import { AppShell } from '@/components/layout/AppShell'
+import { AuthProvider, useAuth } from '@/contexts/AuthContext'
+import { isSupabaseConfigured } from '@/lib/supabase'
+import { CategoriesPage } from '@/pages/CategoriesPage'
+import { DashboardPage } from '@/pages/DashboardPage'
+import { ImportPage } from '@/pages/ImportPage'
+import { LoginPage } from '@/pages/LoginPage'
+import { RulesPage } from '@/pages/RulesPage'
+import { SetupPage } from '@/pages/SetupPage'
+import { TransactionsPage } from '@/pages/TransactionsPage'
+
+function RequireSupabase() {
+  if (!isSupabaseConfigured) return <Navigate to="/setup" replace />
+  return <Outlet />
+}
+
+function RequireAuth() {
+  const { user, loading } = useAuth()
+  if (loading) {
+    return (
+      <div className="flex min-h-dvh items-center justify-center bg-background text-muted">
+        Carregando…
+      </div>
+    )
+  }
+  if (!user) return <Navigate to="/login" replace />
+  return <Outlet />
+}
+
+function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/setup" element={<SetupPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      <Route element={<RequireSupabase />}>
+        <Route element={<RequireAuth />}>
+          <Route element={<AppShell />}>
+            <Route index element={<DashboardPage />} />
+            <Route path="transactions" element={<TransactionsPage />} />
+            <Route path="import" element={<ImportPage />} />
+            <Route path="categories" element={<CategoriesPage />} />
+            <Route path="rules" element={<RulesPage />} />
+          </Route>
+        </Route>
+      </Route>
+      <Route
+        path="*"
+        element={<Navigate to={isSupabaseConfigured ? '/' : '/setup'} replace />}
+      />
+    </Routes>
+  )
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AuthProvider>
+        <AppRoutes />
+      </AuthProvider>
+    </BrowserRouter>
+  )
+}
