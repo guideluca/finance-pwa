@@ -1,0 +1,54 @@
+# Build no GitHub (com secrets) + envio do /dist à Vercel — as chaves VITE_* ficam no bundle de produção.
+#
+# Secrets obrigatórios no repositório (Settings → Secrets and variables → Actions):
+#   VERCEL_TOKEN          https://vercel.com/account/tokens
+#   VERCEL_ORG_ID         .vercel/project.json após `npx vercel link`, ou Team ID no painel
+#   VERCEL_PROJECT_ID     idem
+#   VITE_SUPABASE_URL
+#   VITE_SUPABASE_ANON_KEY
+#   VITE_GEMINI_API_KEY
+#   VITE_GROQ_API_KEY     (opcional; podes criar o secret vazio ou omitir e ajustar o job)
+#
+# Primeira vez: na pasta do projeto, `npx vercel link` (cria projeto e .vercel/project.json com os IDs).
+
+name: Deploy production (Vercel)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: vercel-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - run: npm ci
+
+      - name: Build (Vite embute VITE_*)
+        run: npm run build
+        env:
+          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
+          VITE_GEMINI_API_KEY: ${{ secrets.VITE_GEMINI_API_KEY }}
+          VITE_GROQ_API_KEY: ${{ secrets.VITE_GROQ_API_KEY }}
+
+      - name: SPA fallback (React Router)
+        run: cp vercel.json dist/vercel.json
+
+      - name: Deploy para Vercel
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        run: npx vercel@latest deploy dist --prod --yes --token="$VERCEL_TOKEN"
